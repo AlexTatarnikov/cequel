@@ -10,3 +10,4 @@ gemfiles/*.gemfile.lock
 spec/log
 vendor/bundle
 .idea
+/config
