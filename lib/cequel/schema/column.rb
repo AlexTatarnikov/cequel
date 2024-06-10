@@ -186,15 +186,16 @@ module Cequel
       # @return [Symbol] name of the secondary index applied to this column, if
       #   any
       #
-      attr_reader :index_name
+      attr_reader :index_name, :index_key
 
       #
       # @param (see Column#initialize)
       # @param index_name [Symbol] name this column's secondary index
       #
-      def initialize(name, type, index_name = nil)
+      def initialize(name, type, index_name = nil, index_key = nil)
         super(name, type)
         @index_name = index_name
+        @index_key = index_key
       end
 
       #

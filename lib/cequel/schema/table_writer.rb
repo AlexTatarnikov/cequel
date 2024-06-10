@@ -58,7 +58,7 @@ module Cequel
             if column.indexed?
               statements <<
                 "CREATE INDEX #{column.index_name} " \
-                "ON #{table.name} (#{column.name})"
+                "ON #{table.name} (#{column.index_key || column.name})"
             end
           end
         end

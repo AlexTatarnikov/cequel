@@ -84,11 +84,14 @@ module Cequel
       #   See `Cequel::Type`.
       # options
       #   :index - name of a secondary index to apply to the column, or
-      #     `true` to infer an index name by convention
+      #     `true` to infer an index name by convention or
+      #     { name: 'index_name', key: 'column' } to specify an index name and indexed key
       #
       def column(name, type, options = {})
+        index_options = options.fetch(:index, {})
         columns << DataColumn.new(name, type(type),
-                                  figure_index_name(name, options.fetch(:index, nil)))
+                                  figure_index_name(name, index_options),
+                                  index_options.try(:[], :key))
       end
 
       # Describe a column of type list.
@@ -182,10 +185,14 @@ module Cequel
       end
 
       def figure_index_name(column_name, idx_opt)
+        index_name = :"#{table_name}_#{column_name}_idx"
+
         case idx_opt
-        when true
-          :"#{table_name}_#{column_name}_idx"
-        when false, nil
+        when ::TrueClass
+          index_name
+        when ::Hash
+          idx_opt[:name] || (idx_opt[:key] && index_name)
+        when ::FalseClass, ::NilClass
           nil
         else
           idx_opt

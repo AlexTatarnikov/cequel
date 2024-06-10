@@ -100,7 +100,7 @@ module Cequel
         attr_reader :column, :index_name
 
         def to_cql
-          %Q|CREATE INDEX "#{index_name}" ON "#{table.name}" ("#{column.name}")|
+          %Q|CREATE INDEX "#{index_name}" ON "#{table.name}" ("#{column.index_key || column.name}")|
         end
 
         protected
